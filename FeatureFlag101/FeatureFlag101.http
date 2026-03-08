@@ -1,0 +1,44 @@
+@FeatureFlag101_HostAddress = http://localhost:5151
+
+# ─────────────────────────────────────────────────────────────────
+# GET /weatherforecast  — V1 response (production default)
+# Returns WeatherForecastV1[]: Date, TemperatureC, TemperatureF, Summary
+# Tip: enable "EnhancedWeatherForecast" in appsettings.Development.json
+#      to get V2 fields (humidity, windSpeedKmh, uvIndex) from this same URL.
+# ─────────────────────────────────────────────────────────────────
+GET {{FeatureFlag101_HostAddress}}/weatherforecast
+Accept: application/json
+
+###
+
+# GET /weatherforecast?days=7  — request a custom number of forecast days
+GET {{FeatureFlag101_HostAddress}}/weatherforecast?days=7
+Accept: application/json
+
+###
+
+# ─────────────────────────────────────────────────────────────────
+# GET /weatherforecast/enhanced  — V2 dedicated endpoint
+# Requires: "EnhancedWeatherForecastEndpoint": true in appsettings.Development.json
+# Returns 404 when the feature flag is disabled (production default).
+# ─────────────────────────────────────────────────────────────────
+GET {{FeatureFlag101_HostAddress}}/weatherforecast/enhanced
+Accept: application/json
+
+###
+
+# GET /weatherforecast/enhanced?days=3 — V2 with custom days
+GET {{FeatureFlag101_HostAddress}}/weatherforecast/enhanced?days=3
+Accept: application/json
+
+###
+
+# ─────────────────────────────────────────────────────────────────
+# StrictTemperatureValidation gate — should return 400 when flag is enabled
+# Enable "StrictTemperatureValidation": true and run this to verify the gate.
+# ─────────────────────────────────────────────────────────────────
+GET {{FeatureFlag101_HostAddress}}/weatherforecast?days=20
+Accept: application/json
+
+###
+
